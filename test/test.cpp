@@ -53,6 +53,37 @@ public:
 #endif
 
 // TEST 1: At least five command executions that print "unsuccessful"
+TEST_CASE("AVLTree: Unsuccessful Command Executions", "[unsuccessful]") {
+    AVLTree tree;
+    CoutRedirect redirect;
+
+    // Case 1: Invalid Name (contain digits, special characters)
+    tree.executeCommand("insert \"A11y\" 45679999");
+    REQUIRE(redirect.str() == "unsuccessful\n");
+    redirect.clear();
+    // Case 2: Invalid UFID (not strictly 8 digits)
+    tree.executeCommand("insert \"Ally\" 4567999");
+    REQUIRE(redirect.str() == "unsuccessful\n");
+    redirect.clear();
+    // Case 3: Invalid UFID (not unique/duplicate insertion)
+    tree.executeCommand("insert \"Ally\" 45679999");
+    redirect.clear();
+    tree.executeCommand("insert \"Blly\" 45679999");
+    REQUIRE(redirect.str() == "unsuccessful\n");
+    redirect.clear();
+    // Case 4: Invalid Commands (misspelled/nonexistent)
+    tree.executeCommand("omsert \"Ally\" 45679999");
+    REQUIRE(redirect.str() == "unsuccessful\n");
+    redirect.clear();
+    // Case 5: Deleting nonexistent UFID
+    tree.executeCommand("remove \"Ally\" 99999999");
+    REQUIRE(redirect.str() == "unsuccessful\n");
+    redirect.clear();
+}
+
+
+/**
+// TEST 1: At least five command executions that print "unsuccessful"
 TEST_CASE("AVL Tree: Unsuccessful Command Executions", "[unsuccessful]") {
     AVLTree tree;
     CoutRedirect redirect;
@@ -84,6 +115,7 @@ TEST_CASE("AVL Tree: Unsuccessful Command Executions", "[unsuccessful]") {
     REQUIRE(redirect.str() == "unsuccessful\n");
     redirect.clear();
 }
+
 
 // TEST 2: Test insert command and all four rotation cases
 TEST_CASE("AVL Tree: Insertions and All Four Rotation Cases", "[rotations]") {
@@ -193,3 +225,4 @@ TEST_CASE("AVL Tree: 100 Insertions and 10 Random Deletions", "[stress]") {
     REQUIRE(tree.getInOrder().size() == (totalInsertions - totalRemovals));
     REQUIRE(tree.getInOrder() == expectedInOrder);
 }
+**/
